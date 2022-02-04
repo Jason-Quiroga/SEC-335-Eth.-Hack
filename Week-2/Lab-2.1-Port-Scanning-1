@@ -1,0 +1,25 @@
+#!/bin/bash
+# Storyline: Port Scanner for Eth Hack Lab 2.1
+# This code was written by Jason Quiroga
+
+hostfile=$1
+portfile=$2
+
+if [[ $hostfile == "" ]] 
+then
+        echo "Please enter a host file. The sytnax is 'bash portscanner.sh HOST_FILE PORT_FILE'"
+        exit 1
+fi
+if [[ $portfile == "" ]] 
+then
+        echo "Please enter a port file. The syntax is 'bash portscanner.sh HOST_FILE PORT_FILE'"
+        exit 1
+fi
+
+echo "host,port"
+for host in $(cat $hostfile); do
+        for port in $(cat $portfile); do
+                timeout .1 bash -c "echo >/dev/tcp/$host/$port" 2>/dev/null &&
+                        echo "$host, $port"
+                done
+        done
